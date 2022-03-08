@@ -1,0 +1,72 @@
+﻿@model MVC_CRUD.Models.ViewModels.TicketViewModel
+
+<div class="container">
+    @using (Html.BeginForm("Create", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ticket.ticketNo)
+        @Html.HiddenFor(m => m.enumTransType)
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@Model.headerTitle</h6>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
+                        
+                        @if(@Model.ticket.ticketNo > 0)
+                        {
+                            <div class="form-group">
+                                <label asp-for="ticket.ticketNo" class="col-form-label"></label>
+                                <input asp-for="ticket.ticketNo" type="text" class="form-control form-control-user">
+                                <span asp-validation-for="ticket.ticketNo" class="text-danger"></span>
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <label asp-for="ticket.dateCreated" class="col-form-label"></label>
+                            <input asp-for="ticket.dateCreated" type="date" class="form-control form-control-user">
+                            <span asp-validation-for="ticket.dateCreated" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ticket.requester" class="col-form-label"></label>
+                            <input asp-for="ticket.requester" type="text" class="form-control form-control-user">
+                            <span asp-validation-for="ticket.requester" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ticket.ticketDetails" class="col-form-label"></label>
+                            <textarea asp-for="ticket.ticketDetails" type="text" class="form-control form-control-user"></textarea>
+                            <span asp-validation-for="ticket.ticketDetails" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ticket.ticketStatus" class="col-form-label"></label>
+                            @Html.DropDownListFor(model => model.ticket.ticketStatus, new SelectList(Model.Statuses, "Value", "Text"), new { @class = "form-control form-control-user" })
+                            <span asp-validation-for="ticket.ticketStatus" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="button" class="btn btn btn-secondary shadow-sm">
+                                Cancel
+                            </button>
+                            @if(Model.enumTransType == MVC_CRUD.Helpers.EnumsHelper.EnumTransType.DELETE)
+                            {
+                                <button type="submit" class="btn btn btn-danger shadow-sm">
+                                    Delete This Ticket
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn btn-primary shadow-sm">
+                                    Save Ticket
+                                </button>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

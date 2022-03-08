@@ -1,0 +1,53 @@
+﻿@model MVC_CRUD.Models.ViewModels.TicketListViewModel
+
+@{
+    int rowNo = 0;
+}
+
+<div class="container">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+      <a class="btn btn-primary me-md-2" asp-controller="Ticket" asp-action="Create">Create New Ticket</a>
+    </div>
+
+    @using (Html.BeginForm("Index", "Ticket", FormMethod.Get, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <input asp-for="searchKey" type="text" class="form-control form-control-user" placeholder="Find ticket...">
+        </div>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Ticket #</th>
+                <th>Date Created</th>
+                <th>Requested By</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var c in @Model.tickets)
+            {
+                rowNo++;
+
+                <tr>
+                    <td>@rowNo</td>
+                    <td>@c.ticketNo</td>
+                    <td>@c.dateCreated?.ToString("MM/dd/yyyy")</td>
+                    <td>@c.requester</td>
+                    <td>@c.ticketStatus</td>
+                    <td class="text-center">
+                        <a title="View/Update Ticket" class="btn btn-sm btn-secondary shadow-sm" href="@Url.Action("View", "Ticket", new { id = c.ticketNo })">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger shadow-sm" title="Delete Ticket" href="@Url.Action("Delete", "Ticket", new { id = c.ticketNo })">
+                            <i class="fa fa-solid fa-trash-can"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
